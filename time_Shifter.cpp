@@ -2,10 +2,20 @@
 #include <iostream>
 #include <iomanip>
 
+#include "outputWindow.hpp"
+#include <QApplication> 
+
 using namespace std; 
 
-int main()
+int main(int argc, char* argv[])
 {
+
+	QApplication app(argc, argv); 
+
+	OutputWindow gui; 
+	gui.show(); 
+	return app.exec(); 
+
 	char continueChar = ' '; 
 	string output = ""; 
 
@@ -21,11 +31,11 @@ int main()
 	int shiftedSeconds = 0; 
 	int shiftedMillis = 0; 
 
-	cout << "First enter the amount of minues the value needs to be shifted by" << endl; 
+	cout << "First enter the amount of minutes the value needs to be shifted by" << endl; 
 	cin >> minutesOfTimeShift;
 	cout << "Enter the seconds value" << endl;
 	cin >> secondsOfTimeShift;
-	cout << "Enter the millis value" << endl;
+	cout << "Enter the frames value" << endl;
 	cin >> millisOfTimeShift;
 
 	
@@ -37,7 +47,7 @@ int main()
 		cin >> Minutes_PreShift;
 		cout << "Enter the seconds value" << endl;
 		cin >> seconds_PreShift;
-		cout << "Enter the millis value" << endl;
+		cout << "Enter the frames value" << endl;
 		cin >> milis_PreShift;
 
 		shiftedMinutes = Minutes_PreShift - minutesOfTimeShift; 

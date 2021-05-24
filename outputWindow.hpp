@@ -5,8 +5,9 @@
 
 #include <QWidget>
 #include <QtWidgets>
-
-#include "qt_interpreter.hpp"
+#include <fstream>
+#include <iostream>
+#include <QLayout>
 
 class OutputWindow : public QWidget {
     Q_OBJECT
@@ -14,10 +15,9 @@ class OutputWindow : public QWidget {
 public:
 
     OutputWindow(QWidget* parent = nullptr);
-    OutputWindow(std::string filename, QWidget* parent = nullptr);
     QWidget* outWindow;
 
-signals:
+//signals:
 
     /*void notify(QString entry);
 
@@ -43,11 +43,23 @@ public slots:
 
     void getLine(QGraphicsLineItem* item);*/
 
-    void ReceiveFile(QString* fileName);
+    void ReceiveFile();
 
 private:
     QLineEdit* TopBox; 
+    QLineEdit* BottomBox; 
+    QLabel* inputFilePrompt; 
+    QLabel* outputFilePrompt; 
+
+    QLabel* inputHours;
+    QLabel* inputMinutes; 
+    QLabel* inputSeconds; 
+    QLabel* inputFrames;  
+    QLineEdit* hoursBox; 
+    QLineEdit* minutesBox;
+    QLineEdit* secondsBox; 
+    QLineEdit* framesBox;  
 };
 
 
-#endif#pragma once
+#endif
