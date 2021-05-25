@@ -128,7 +128,7 @@ void OutputWindow::ReceiveFile()
         getline(ifs, input);
 
         //For debugging 
-        cout << "Input recieved from file: " << input << endl; 
+        //cout << "Input recieved from file: " << input << endl; 
 
         //TODO if and of the charcters are a letter then we can just copy it to the new file becayse it is not a line containing a time stamp 
         //otherwise it contains a time stamp and will need to be adjusted before appending to the output file
@@ -136,6 +136,8 @@ void OutputWindow::ReceiveFile()
 
         if (ok) //if all of the characters in the input string are of the time stamp format then process it like a time stamp 
         {
+            //cout << "Input: " << input << " passed isTimeStamp() check!" << endl; //for Debugging
+            size = input.size(); 
             //for each character from the input line we pulled in 
             for (int i = 0; i < size; i++)
             {
@@ -151,10 +153,6 @@ void OutputWindow::ReceiveFile()
                         {
                             minutesHolder = tempValue; 
                         }
-                        else if (secondsHolder == "")
-                        {
-                            secondsHolder = tempValue; 
-                        }
                         else 
                         {
                             cout << "ERROR: Too many inputs collected from file, all value holders are already filled!" << endl;
@@ -164,15 +162,24 @@ void OutputWindow::ReceiveFile()
                 }
                 else if (input[i] == '.')
                 {
+                    if ((isInt(tempValue)) && (secondsHolder == ""))
+                    {
+                        secondsHolder = tempValue; 
+                    }
+
                     i++; 
-                    tempValue = input[i] + input[i + 1] + input[i + 2]; 
+                    tempValue = input.substr(i,(i+3));
                     if (isInt(tempValue))
                     {
                         framesHolder = tempValue; 
                     }
+                    else 
+                    {
+                        cout << "Failed to get frames value, insted got vlaue:" << tempValue << endl; // For Debugging
+                    }
 
                     //TODO run values and then append output to outputfile
-                    cout << "Ready to process time stamp value:" << endl; //For Debugging
+                    cout << "Ready to process new time stamp value:" << endl; //For Debugging
                     cout << "Hours Value: " << hoursHolder << endl; //For Debugging
                     cout << "Minutes Value: " << minutesHolder << endl; //For Debugging
                     cout << "Seconds Value: " << secondsHolder << endl; //For Debugging
@@ -182,6 +189,10 @@ void OutputWindow::ReceiveFile()
                 }
                 else if ((input[i] == ',') && (framesHolder != "") && (hoursHolder != "") && (minutesHolder != "") && (secondsHolder != "")) //if we hit a comma that means we have all the values needed to adjust the first set of times
                 {
+                    if (isInt(tempValue))
+                    {
+                        framesHolder = tempValue; 
+                    }
                     //reset values for the next batch of inputs
                     hoursHolder = "";
                     minutesHolder = ""; 
@@ -199,7 +210,7 @@ void OutputWindow::ReceiveFile()
         {
             //TODO append input to output file
              
-            cout << "Input: " << input << ", is not a timestamp so it gets appended directly to output file!" << endl; //For Debugging
+            //cout << "Input: " << input << ", is not a timestamp so it gets appended directly to output file!" << endl; //For Debugging
         }
 
         //reset values for the next batch of inputs
@@ -215,10 +226,14 @@ bool isInt(string inputString)
 {
    for (int i =0; i< inputString.size(); i++)
    {
-       if  ((inputString[i] < '0') || (inputString[i] > '9')) //if the chatacter is not a numerical one
-       {
+        if (inputString[i] == 13)
+        {
+            continue; 
+        }
+        else if ((inputString[i] < '0') || (inputString[i] > '9')) //if the chatacter is not a numerical one
+        {
            return false; 
-       }
+        }
    }
    return true; 
 }
@@ -228,12 +243,21 @@ bool isTimeStamp(string inputString)
 {
    for (int i =0; i< inputString.size(); i++)
    {
-       if  ((inputString[i] < '0') || (inputString[i] > '9')) //if the chatacter is not a numerical one
+       if  ((inputString[i] == '0') || (inputString[i] == '1') || (inputString[i] == '2') || (inputString[i] == '3') || (inputString[i] == '4') || (inputString[i] == '5') || (inputString[i] == '6') || (inputString[i] == '7') || (inputString[i] == '8') || (inputString[i] == '9') || (inputString[i] == ' ') || (inputString[i] == ',') || (inputString[i] == ':') || (inputString[i] == '.'))//if the chatacter is not a numerical one
        {
-           if ((inputString[i] != ',') && (inputString[i] != ':') && (inputString[i] != '.')) //if it is not one of the only other allowed characters for a time stamp
-           {
-               return false; 
-           }
+            //do nothing
+       }
+       else if (inputString[i] == 13)
+       {
+           //new line character 
+           //cout << "carraige return character hit!" << endl; //for debugging 
+       }
+       else
+       {
+            //std::cout << "numerical value of failed character: " << static_cast<unsigned>(inputString[i]) << endl; 
+            //cout << "failed on character: " << inputString[i] << " at position: " << i << endl; //for debugging 
+            //cout << "String: " << inputString << "Failed isTimeStamp Check" << endl; //for Debugging 
+            return false;
        }
    }
    return true;     
