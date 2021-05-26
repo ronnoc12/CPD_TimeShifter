@@ -120,6 +120,8 @@ void OutputWindow::ReceiveFile()
 
     //attempt to open the specified file 
     ifstream ifs(StdInPath);
+    ofstream ofs;
+    ofs.open (StdOutFile, std::ofstream::out | std::ofstream::app);
 
     //so long as we are able to read from the file
     while(ifs.good())
@@ -165,11 +167,12 @@ void OutputWindow::ReceiveFile()
                     if ((isInt(tempValue)) && (secondsHolder == ""))
                     {
                         secondsHolder = tempValue; 
+                        tempValue = ""; 
                     }
 
                     i++; 
-                    tempValue = input.substr(i,(i+3));
-                    if (isInt(tempValue))
+                    tempValue = input.substr(i,3);
+                    if (isInt(tempValue) && (framesHolder == ""))
                     {
                         framesHolder = tempValue; 
                     }
@@ -178,21 +181,22 @@ void OutputWindow::ReceiveFile()
                         cout << "Failed to get frames value, insted got vlaue:" << tempValue << endl; // For Debugging
                     }
 
-                    //TODO run values and then append output to outputfile
-                    cout << "Ready to process new time stamp value:" << endl; //For Debugging
-                    cout << "Hours Value: " << hoursHolder << endl; //For Debugging
-                    cout << "Minutes Value: " << minutesHolder << endl; //For Debugging
-                    cout << "Seconds Value: " << secondsHolder << endl; //For Debugging
-                    cout << "Frames Value: " << framesHolder << endl; //For Debugging
-
-                    i += 3; //should be comma or end of line character
+                    i += 2; //should be comma or end of line character
+                    cout << "i value after frames aquired: " << input[i] << endl;
                 }
-                else if ((input[i] == ',') && (framesHolder != "") && (hoursHolder != "") && (minutesHolder != "") && (secondsHolder != "")) //if we hit a comma that means we have all the values needed to adjust the first set of times
+                else if (input[i] == ',') //if we hit a comma that means we have all the values needed to adjust the first set of times
                 {
-                    if (isInt(tempValue))
+                    if ((framesHolder != "") && (hoursHolder != "") && (minutesHolder != "") && (secondsHolder != ""))
                     {
-                        framesHolder = tempValue; 
+                        //TODO adjust time stamps and print to file
+                        //TODO run values and then append output to outputfile
+                        cout << "Ready to process new time stamp value:" << endl; //For Debugging
+                        cout << "Hours Value: " << hoursHolder << endl; //For Debugging
+                        cout << "Minutes Value: " << minutesHolder << endl; //For Debugging
+                        cout << "Seconds Value: " << secondsHolder << endl; //For Debugging
+                        cout << "Frames Value: " << framesHolder << endl; //For Debugging
                     }
+
                     //reset values for the next batch of inputs
                     hoursHolder = "";
                     minutesHolder = ""; 
@@ -204,11 +208,22 @@ void OutputWindow::ReceiveFile()
                 {
                     tempValue = tempValue + input[i]; 
                 }
-            }   
+            }  
+
+            if ((framesHolder != "") && (hoursHolder != "") && (minutesHolder != "") && (secondsHolder != ""))
+            {
+                //TODO adjust time stamps and print to file
+                //TODO run values and then append output to outputfile
+                cout << "Ready to process new time stamp value:" << endl; //For Debugging
+                cout << "Hours Value: " << hoursHolder << endl; //For Debugging
+                cout << "Minutes Value: " << minutesHolder << endl; //For Debugging
+                cout << "Seconds Value: " << secondsHolder << endl; //For Debugging
+                cout << "Frames Value: " << framesHolder << endl; //For Debugging
+            }
         }
         else //the input was a string which can be directly appended to the output file 
         {
-            //TODO append input to output file
+            ofs << input << endl; 
              
             //cout << "Input: " << input << ", is not a timestamp so it gets appended directly to output file!" << endl; //For Debugging
         }

@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/TimeShifter.dir/TimeShifter_autogen/mocs_compilation.cpp.o CMakeFiles/TimeShifter.dir/time_Shifter.cpp.o CMakeFiles/TimeShifter.dir/outputWindow.cpp.o  -o TimeShifter  /usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5.12.8 /usr/lib/x86_64-linux-gnu/libQt5Gui.so.5.12.8 /usr/lib/x86_64-linux-gnu/libQt5Core.so.5.12.8 

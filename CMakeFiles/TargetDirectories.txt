@@ -1,0 +1,4 @@
+/home/ronnoc/CPDProgram/CPD_TimeShifter/CMakeFiles/rebuild_cache.dir
+/home/ronnoc/CPDProgram/CPD_TimeShifter/CMakeFiles/edit_cache.dir
+/home/ronnoc/CPDProgram/CPD_TimeShifter/CMakeFiles/TimeShifter.dir
+/home/ronnoc/CPDProgram/CPD_TimeShifter/CMakeFiles/TimeShifter_autogen.dir
