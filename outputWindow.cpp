@@ -6,6 +6,9 @@ using namespace std;
 bool isInt(string inputString);
 bool isTimeStamp(string inputString); 
 int QStringTOInt(QString input); 
+std::string editTimeStampValues(int shiftAmountHours, int shiftAmountMinutes, int shiftAmountSeconds, int shiftAmountFrames, std::string hoursHolder, std::string minutesHolder, std::string secondsHolder, std::string framesHolder);
+bool checkTimeStamp(int shiftAmountHours, int shiftAmountMinutes, int shiftAmountSeconds, int shiftAmountFrames, std::string hoursHolder, std::string minutesHolder, std::string secondsHolder, std::string framesHolder);
+bool getOutputTimeStamp(std::string StdOutFile, bool validSecondTimeStamp, bool validFirstTimeStamp, std::string timeStampFirstHalf, std::string timeStampSecondHalf);
 
 OutputWindow::OutputWindow(QWidget* parent) : QWidget(parent)
 {
@@ -89,16 +92,23 @@ void OutputWindow::ReceiveFile()
     string input = "";
     int size = 0; 
     bool ok = false; 
-    int shiftedHours   = 0;  
-    int shiftedMinutes = 0;  
-    int shiftedSeconds = 0;  
-    int shiftedFrames  = 0; 
+    bool validSecondTimeStamp = false; 
+    bool validFirstTimeStamp = false; 
+    bool printText = false; 
+
+    int shiftAmountHours   = 0;
+    int shiftAmountMinutes = 0;
+    int shiftAmountSeconds = 0;
+    int shiftAmountFrames  = 0;
 
     string hoursHolder = "";
     string minutesHolder = ""; 
     string secondsHolder = ""; 
     string framesHolder = ""; 
     string tempValue = ""; 
+    string timeStampFirstHalf = "";
+    string timeStampSecondHalf = ""; 
+    string timeStampOutput = "";
 
     //get input file path and output file name from gui user input
     QString inputFilePath = TopBox->text(); 
@@ -109,10 +119,13 @@ void OutputWindow::ReceiveFile()
     QString QshiftedFrames  = framesBox->text();  
 
     //convert Qstrings with ints to integers
-    shiftedHours = QStringTOInt(QshiftedHours); 
-    shiftedMinutes = QStringTOInt(QshiftedMinutes);
-    shiftedSeconds = QStringTOInt(QshiftedSeconds);
-    shiftedFrames = QStringTOInt(QshiftedFrames); 
+    shiftAmountHours = QStringTOInt(QshiftedHours);
+    shiftAmountMinutes = QStringTOInt(QshiftedMinutes);
+    shiftAmountSeconds = QStringTOInt(QshiftedSeconds);
+    shiftAmountFrames = QStringTOInt(QshiftedFrames);
+
+    //adjust frames from frames to millis value
+    shiftAmountFrames = (shiftAmountFrames * 40); 
 
     //convert collected values from QString to stdString for use later 
     string StdInPath = inputFilePath.toStdString(); 
@@ -120,8 +133,7 @@ void OutputWindow::ReceiveFile()
 
     //attempt to open the specified file 
     ifstream ifs(StdInPath);
-    ofstream ofs;
-    ofs.open (StdOutFile, std::ofstream::out | std::ofstream::app);
+    ofstream ofs; 
 
     //so long as we are able to read from the file
     while(ifs.good())
@@ -182,19 +194,24 @@ void OutputWindow::ReceiveFile()
                     }
 
                     i += 2; //should be comma or end of line character
-                    cout << "i value after frames aquired: " << input[i] << endl;
+                    //cout << "i value after frames aquired: " << input[i] << endl;
                 }
                 else if (input[i] == ',') //if we hit a comma that means we have all the values needed to adjust the first set of times
                 {
                     if ((framesHolder != "") && (hoursHolder != "") && (minutesHolder != "") && (secondsHolder != ""))
                     {
-                        //TODO adjust time stamps and print to file
-                        //TODO run values and then append output to outputfile
-                        cout << "Ready to process new time stamp value:" << endl; //For Debugging
-                        cout << "Hours Value: " << hoursHolder << endl; //For Debugging
-                        cout << "Minutes Value: " << minutesHolder << endl; //For Debugging
-                        cout << "Seconds Value: " << secondsHolder << endl; //For Debugging
-                        cout << "Frames Value: " << framesHolder << endl; //For Debugging
+                        validFirstTimeStamp = checkTimeStamp(shiftAmountHours, shiftAmountMinutes, shiftAmountSeconds, shiftAmountFrames, hoursHolder, minutesHolder, secondsHolder, framesHolder);
+                        //adjust time stamps and print to file
+                        if (validFirstTimeStamp == true) //only calculate shifted time if the current time stamp is larger than the amount of shift needed
+                        {
+                            timeStampFirstHalf = editTimeStampValues(shiftAmountHours, shiftAmountMinutes, shiftAmountSeconds, shiftAmountFrames, hoursHolder, minutesHolder, secondsHolder, framesHolder);
+                        }
+                        
+                        //cout << "Ready to process new time stamp value:" << endl; //For Debugging
+                        //cout << "Hours Value: " << hoursHolder << endl; //For Debugging
+                        //cout << "Minutes Value: " << minutesHolder << endl; //For Debugging
+                        //cout << "Seconds Value: " << secondsHolder << endl; //For Debugging
+                        //cout << "Frames Value: " << framesHolder << endl; //For Debugging
                     }
 
                     //reset values for the next batch of inputs
@@ -212,19 +229,33 @@ void OutputWindow::ReceiveFile()
 
             if ((framesHolder != "") && (hoursHolder != "") && (minutesHolder != "") && (secondsHolder != ""))
             {
-                //TODO adjust time stamps and print to file
-                //TODO run values and then append output to outputfile
-                cout << "Ready to process new time stamp value:" << endl; //For Debugging
-                cout << "Hours Value: " << hoursHolder << endl; //For Debugging
-                cout << "Minutes Value: " << minutesHolder << endl; //For Debugging
-                cout << "Seconds Value: " << secondsHolder << endl; //For Debugging
-                cout << "Frames Value: " << framesHolder << endl; //For Debugging
+                //adjust time stamps and print to file
+                
+                validSecondTimeStamp = checkTimeStamp(shiftAmountHours, shiftAmountMinutes, shiftAmountSeconds, shiftAmountFrames, hoursHolder, minutesHolder, secondsHolder, framesHolder);
+               
+                if (validSecondTimeStamp == true) //only calculate shifted time if the current time stamp is larger than the amount of shift needed
+                {
+                    timeStampSecondHalf = editTimeStampValues(shiftAmountHours, shiftAmountMinutes, shiftAmountSeconds, shiftAmountFrames, hoursHolder, minutesHolder, secondsHolder, framesHolder);
+                }
+                //cout << "Ready to process new time stamp value:" << endl; //For Debugging
+                //cout << "Hours Value: " << hoursHolder << endl; //For Debugging
+                //cout << "Minutes Value: " << minutesHolder << endl; //For Debugging
+                //cout << "Seconds Value: " << secondsHolder << endl; //For Debugging
+                //cout << "Frames Value: " << framesHolder << endl; //For Debugging
             }
+
+            printText = getOutputTimeStamp(StdOutFile, validSecondTimeStamp, validFirstTimeStamp, timeStampFirstHalf, timeStampSecondHalf);
+        
+            //cout << "Adjusted time stamp from: " << input << " to: " << timeStampOutput << endl; //for Debugging
         }
         else //the input was a string which can be directly appended to the output file 
         {
-            ofs << input << endl; 
-             
+            if (printText == true) //means the timestamp shift was valid so we can print the text
+            {
+                ofs.open (StdOutFile, std::ofstream::out | std::ofstream::app);
+                ofs << input << endl; 
+                ofs.close(); 
+            } 
             //cout << "Input: " << input << ", is not a timestamp so it gets appended directly to output file!" << endl; //For Debugging
         }
 
@@ -235,6 +266,40 @@ void OutputWindow::ReceiveFile()
         framesHolder = ""; 
         tempValue = "";    
     }
+    cout << "Finished with time shifting! \nOutput written to: " << StdOutFile << endl; 
+}
+
+bool getOutputTimeStamp(std::string StdOutFile, bool validSecondTimeStamp, bool validFirstTimeStamp, std::string timeStampFirstHalf, std::string timeStampSecondHalf)
+{
+    ofstream out;
+    string zeroTimeStamp = "0:00:00.000";
+    string timeStampOutput = ""; 
+
+    if ((validFirstTimeStamp == true) && (validSecondTimeStamp == true)) //if both time stamps are valid and less than the shift amount
+    {
+        timeStampOutput = timeStampFirstHalf; 
+        timeStampOutput = timeStampOutput + ","; 
+        timeStampOutput = timeStampOutput + timeStampSecondHalf;
+
+        out.open (StdOutFile, std::ofstream::out | std::ofstream::app);
+        out << timeStampOutput << endl;
+        out.close();
+
+        return true; 
+    }
+    else if ((validFirstTimeStamp == false) && (validSecondTimeStamp == true)) //the first time stamp is not valid but the second is 
+    {
+        timeStampOutput = zeroTimeStamp; //set the time stamp to begin at zero 
+        timeStampOutput = timeStampOutput + ","; 
+        timeStampOutput = timeStampOutput + timeStampSecondHalf;
+
+        out.open (StdOutFile, std::ofstream::out | std::ofstream::app);
+        out << timeStampOutput << endl;
+        out.close();
+
+        return true; 
+    }
+    return false; 
 }
 
 bool isInt(string inputString)
@@ -287,6 +352,134 @@ int QStringTOInt(QString input)
     {
         output = stoi(StdInput); 
     }
+
+    return output; 
+}
+
+
+bool checkTimeStamp(int shiftAmountHours, int shiftAmountMinutes, int shiftAmountSeconds, int shiftAmountFrames, std::string hoursHolder, std::string minutesHolder, std::string secondsHolder, std::string framesHolder)
+{
+    int inputHours = stoi(hoursHolder); 
+    int inputMinutes = stoi(minutesHolder);
+    int inputSeconds = stoi(secondsHolder);
+    int inputFrames = stoi(framesHolder);
+
+    int totalCurrentSeconds = ((inputHours * 60 * 60) + (inputMinutes * 60) + inputSeconds); 
+    int totalShiftSeconds = ((shiftAmountHours * 60 * 60) + (shiftAmountMinutes * 60) + shiftAmountSeconds); 
+
+    //if our current time stamp is less than our shift then we will get a negative number when we shift it 
+    if ((totalShiftSeconds > totalCurrentSeconds) && (shiftAmountFrames > inputFrames))
+    {
+        return false; //this means that the current time stamp is less than the shift amount so it should be deleted! 
+    }
+    return true; //otherwise return true    
+}
+
+std::string editTimeStampValues(int shiftAmountHours, int shiftAmountMinutes, int shiftAmountSeconds, int shiftAmountFrames, std::string hoursHolder, std::string minutesHolder, std::string secondsHolder, std::string framesHolder)
+{
+    //TODO remove all of the verbal lines from the file that come before the amount of time shifted
+    string output = ""; 
+
+    int inputHours = stoi(hoursHolder); 
+    int inputMinutes = stoi(minutesHolder);
+    int inputSeconds = stoi(secondsHolder);
+    int inputFrames = stoi(framesHolder);
+
+    int HoursOutput = inputHours;
+    int MinutesOutput = inputMinutes; 
+    int SecondsOutput = inputSeconds;
+    int FramesOutput = inputFrames;
+
+    if (inputFrames < shiftAmountFrames) //if we need to subtract more frames than we have 
+    {
+        if (inputSeconds != 0)
+        {
+            SecondsOutput--; //subtract one from our ourput seconds
+        }
+        else
+        {
+            MinutesOutput--; //subtract one from minutes 
+            SecondsOutput = 59; //redistribute the remaining seconds
+        }
+
+        FramesOutput += 1000; 
+    }
+    
+    FramesOutput = (FramesOutput - shiftAmountFrames); 
+
+    if (inputSeconds < shiftAmountSeconds) //if we need to subtract more frames than we have 
+    {
+        if (inputMinutes != 0) 
+        {
+            MinutesOutput--; //subtract one from our ourput minutes
+        }
+        else
+        {
+            HoursOutput--; //subtract one from hours 
+            MinutesOutput = 59; //redistribute the remaining minutes
+        }
+
+        SecondsOutput += 60; 
+    }
+
+    SecondsOutput = (SecondsOutput - shiftAmountSeconds);
+
+    if (inputMinutes < shiftAmountMinutes) //if we need to subtract more frames than we have 
+    {
+        if (inputHours != 0)
+        {
+            HoursOutput--; //subtract one from our ourput minutes
+        }
+        else //if hours is zero and we subtract more minutes than we have we need to error because there is no larger time stamp
+        {
+           //TODO meaningful error 
+        }
+
+        MinutesOutput += 60; 
+    }
+
+    MinutesOutput = (MinutesOutput - shiftAmountMinutes);
+
+    if (inputHours < shiftAmountHours)
+    {
+        //TODO error because no such case should exist since there is no larger time increment 
+    }
+    else
+    {
+        HoursOutput = (HoursOutput - shiftAmountHours);
+    }
+
+    //0:07:00.480,0:07:02.560
+
+    output = output + to_string(HoursOutput); 
+    output = output + ":";
+
+    if (MinutesOutput < 10)
+    {
+        output = output + "0";
+    }
+
+    output = output + to_string(MinutesOutput);
+    output = output + ":";
+
+    if (SecondsOutput < 10)
+    {
+        output = output + "0";
+    }
+
+    output = output + to_string(SecondsOutput);
+    output = output + ".";
+
+    if (FramesOutput < 10)
+    {
+        output = output + "00";
+    }
+    else if (FramesOutput < 100)
+    {
+        output = output + "0";
+    }
+
+    output = output + to_string(FramesOutput);
 
     return output; 
 }

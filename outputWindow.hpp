@@ -8,6 +8,7 @@
 #include <fstream>
 #include <iostream>
 #include <QLayout>
+#include <cmath>
 
 class OutputWindow : public QWidget {
     Q_OBJECT
@@ -16,6 +17,7 @@ public:
 
     OutputWindow(QWidget* parent = nullptr);
     QWidget* outWindow;
+    
 
 //signals:
 
