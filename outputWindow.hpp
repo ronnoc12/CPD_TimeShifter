@@ -8,7 +8,8 @@
 #include <fstream>
 #include <iostream>
 #include <QLayout>
-#include <cmath>
+
+using namespace std;
 
 class OutputWindow : public QWidget {
     Q_OBJECT
@@ -17,33 +18,17 @@ public:
 
     OutputWindow(QWidget* parent = nullptr);
     QWidget* outWindow;
-    
 
-//signals:
-
-    /*void notify(QString entry);
-
-    void sendErrorMessage(QString entry);
-
-    void sendInfo(QString entry);
-
-    void notifyCanvas(QGraphicsItem* item);
-
-    void sendPoint(QGraphicsEllipseItem* item);
-
-    void sendLine(QGraphicsLineItem* item);*/
+    //Function Declarations
+    bool isInt(string inputString);
+    bool isTimeStamp(string inputString); 
+    int QStringTOInt(QString input); 
+    std::string editTimeStampValues(int shiftAmountHours, int shiftAmountMinutes, int shiftAmountSeconds, int shiftAmountFrames, std::string hoursHolder, std::string minutesHolder, std::string secondsHolder, std::string framesHolder);
+    bool checkTimeStamp(int shiftAmountHours, int shiftAmountMinutes, int shiftAmountSeconds, int shiftAmountFrames, std::string hoursHolder, std::string minutesHolder, std::string secondsHolder, std::string framesHolder);
+    bool getOutputTimeStamp(std::string StdOutFile, bool validSecondTimeStamp, bool validFirstTimeStamp, std::string timeStampFirstHalf, std::string timeStampSecondHalf);
+    void clearFile(std::string StdOutFile);
 
 public slots:
-
-    /*void ReceiveLine(QString entry);
-    //TODO pick up draw graphic function to be handed off to canvas widget
-    void ReceiveInterpreterInfo(QString info);
-
-    void ReceiveInterpreterError(QString error);
-
-    void ReceivePoint(QGraphicsEllipseItem* item);
-
-    void getLine(QGraphicsLineItem* item);*/
 
     void ReceiveFile();
 
@@ -57,10 +42,14 @@ private:
     QLabel* inputMinutes; 
     QLabel* inputSeconds; 
     QLabel* inputFrames;  
+    QLabel* errorLabel;
     QLineEdit* hoursBox; 
     QLineEdit* minutesBox;
     QLineEdit* secondsBox; 
     QLineEdit* framesBox;  
+
+    QLineEdit* sysOutput; 
+    QPalette *palette;
 };
 
 
