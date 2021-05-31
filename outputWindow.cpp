@@ -106,6 +106,7 @@ void OutputWindow::ReceiveFile()
     bool validSecondTimeStamp = false; 
     bool validFirstTimeStamp = false; 
     bool printText = false; 
+    bool folderFound = false; 
 
     int shiftAmountHours   = 0;
     int shiftAmountMinutes = 0;
@@ -120,6 +121,7 @@ void OutputWindow::ReceiveFile()
     string timeStampFirstHalf = "";
     string timeStampSecondHalf = ""; 
     string timeStampOutput = "";
+    string failedOpenFileMsg = "ERROR: Failed to open designated file"; 
 
     //get input file path and output file name from gui user input
     QString inputFilePath = TopBox->text(); 
@@ -150,6 +152,11 @@ void OutputWindow::ReceiveFile()
 
     //open the file and clear it's contents before we try to write to it later on
     clearFile(StdOutFile);
+
+    if (ifs.good())
+    {
+        folderFound = true; 
+    }
 
     //so long as we are able to read from the file
     while(ifs.good())
@@ -278,11 +285,21 @@ void OutputWindow::ReceiveFile()
         }  
     }
 
-    //print message to gui that lets user know the process was completed sucessfully
-    ErrorMsg = QString::fromStdString(processCompleteMsg);
-    palette->setColor(QPalette::Text,Qt::black);
-    sysOutput->setPalette(*palette);
-    sysOutput->setText(ErrorMsg); 
+    if (folderFound == true)
+    {
+        //print message to gui that lets user know the process was completed sucessfully
+        ErrorMsg = QString::fromStdString(processCompleteMsg);
+        palette->setColor(QPalette::Text,Qt::black);
+        sysOutput->setPalette(*palette);
+        sysOutput->setText(ErrorMsg); 
+    }
+    else //the file was not able to be opened for reading  
+    {
+        ErrorMsg = QString::fromStdString(failedOpenFileMsg);
+        palette->setColor(QPalette::Text,Qt::red);
+        sysOutput->setPalette(*palette);
+        sysOutput->setText(ErrorMsg); 
+    }
 }
 
 bool OutputWindow::getOutputTimeStamp(std::string StdOutFile, bool validSecondTimeStamp, bool validFirstTimeStamp, std::string timeStampFirstHalf, std::string timeStampSecondHalf)
@@ -393,6 +410,7 @@ bool OutputWindow::checkTimeStamp(int shiftAmountHours, int shiftAmountMinutes, 
 //function for manipulating the time stamp values from the file
 std::string OutputWindow::editTimeStampValues(int shiftAmountHours, int shiftAmountMinutes, int shiftAmountSeconds, int shiftAmountFrames, std::string hoursHolder, std::string minutesHolder, std::string secondsHolder, std::string framesHolder)
 {
+    QString ErrorMsg; 
     string output = ""; 
 
     int inputHours = stoi(hoursHolder); 
