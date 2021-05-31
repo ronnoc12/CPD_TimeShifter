@@ -1,0 +1,6 @@
+# ninja log v5
+1	2075	6441174588057302	TimeShifter_autogen/timestamp	a5e4029b8adfd3ad
+2082	7327	6441174640352586	CMakeFiles/TimeShifter.dir/time_Shifter.cpp.obj	4ccaaecd9e04a6db
+2076	7336	6441174640522169	CMakeFiles/TimeShifter.dir/TimeShifter_autogen/mocs_compilation.cpp.obj	36fcab51bd69366
+14	4824	6441175258951661	CMakeFiles/TimeShifter.dir/outputWindow.cpp.obj	2c806ca6ece90b9b
+4825	5223	6441175262292722	TimeShifter.exe	94bf0a5b97271df6

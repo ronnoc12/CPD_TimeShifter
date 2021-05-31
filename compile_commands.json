@@ -1,0 +1,83 @@
+[
+{
+    "arguments": [
+        "C:/Qt/Tools/mingw810_64/bin/g++.exe",
+        "-c",
+        "--target=x86_64-w64-mingw32",
+        "-m64",
+        "-g",
+        "-std=gnu++14",
+        "-IC:/Users/heath/Downloads/CPD_TimeShifter-main/build-CPD_TimeShifter-main-Desktop_Qt_5_15_2_MinGW_64_bit-Debug",
+        "-IC:/Users/heath/Downloads/CPD_TimeShifter-main/CPD_TimeShifter-main",
+        "-IC:/Users/heath/Downloads/CPD_TimeShifter-main/build-CPD_TimeShifter-main-Desktop_Qt_5_15_2_MinGW_64_bit-Debug/TimeShifter_autogen/include",
+        "-isystemC:/Qt/5.15.2/mingw81_64/include",
+        "-isystemC:/Qt/5.15.2/mingw81_64/include/QtWidgets",
+        "-isystemC:/Qt/5.15.2/mingw81_64/include/QtGui",
+        "-isystemC:/Qt/5.15.2/mingw81_64/include/QtANGLE",
+        "-isystemC:/Qt/5.15.2/mingw81_64/include/QtCore",
+        "-isystemC:/Qt/5.15.2/mingw81_64/mkspecs/win32-g++",
+        "-DQT_CORE_LIB",
+        "-DQT_GUI_LIB",
+        "-DQT_WIDGETS_LIB",
+        "-x",
+        "c++",
+        "C:\\Users\\heath\\Downloads\\CPD_TimeShifter-main\\build-CPD_TimeShifter-main-Desktop_Qt_5_15_2_MinGW_64_bit-Debug\\TimeShifter_autogen\\mocs_compilation.cpp"
+    ],
+    "directory": "C:/Users/heath/Downloads/CPD_TimeShifter-main/build-CPD_TimeShifter-main-Desktop_Qt_5_15_2_MinGW_64_bit-Debug",
+    "file": "C:/Users/heath/Downloads/CPD_TimeShifter-main/build-CPD_TimeShifter-main-Desktop_Qt_5_15_2_MinGW_64_bit-Debug/TimeShifter_autogen/mocs_compilation.cpp"
+},
+{
+    "arguments": [
+        "C:/Qt/Tools/mingw810_64/bin/g++.exe",
+        "-c",
+        "--target=x86_64-w64-mingw32",
+        "-m64",
+        "-g",
+        "-std=gnu++14",
+        "-IC:/Users/heath/Downloads/CPD_TimeShifter-main/build-CPD_TimeShifter-main-Desktop_Qt_5_15_2_MinGW_64_bit-Debug",
+        "-IC:/Users/heath/Downloads/CPD_TimeShifter-main/CPD_TimeShifter-main",
+        "-IC:/Users/heath/Downloads/CPD_TimeShifter-main/build-CPD_TimeShifter-main-Desktop_Qt_5_15_2_MinGW_64_bit-Debug/TimeShifter_autogen/include",
+        "-isystemC:/Qt/5.15.2/mingw81_64/include",
+        "-isystemC:/Qt/5.15.2/mingw81_64/include/QtWidgets",
+        "-isystemC:/Qt/5.15.2/mingw81_64/include/QtGui",
+        "-isystemC:/Qt/5.15.2/mingw81_64/include/QtANGLE",
+        "-isystemC:/Qt/5.15.2/mingw81_64/include/QtCore",
+        "-isystemC:/Qt/5.15.2/mingw81_64/mkspecs/win32-g++",
+        "-DQT_CORE_LIB",
+        "-DQT_GUI_LIB",
+        "-DQT_WIDGETS_LIB",
+        "-x",
+        "c++",
+        "C:\\Users\\heath\\Downloads\\CPD_TimeShifter-main\\CPD_TimeShifter-main\\time_Shifter.cpp"
+    ],
+    "directory": "C:/Users/heath/Downloads/CPD_TimeShifter-main/build-CPD_TimeShifter-main-Desktop_Qt_5_15_2_MinGW_64_bit-Debug",
+    "file": "C:/Users/heath/Downloads/CPD_TimeShifter-main/CPD_TimeShifter-main/time_Shifter.cpp"
+},
+{
+    "arguments": [
+        "C:/Qt/Tools/mingw810_64/bin/g++.exe",
+        "-c",
+        "--target=x86_64-w64-mingw32",
+        "-m64",
+        "-g",
+        "-std=gnu++14",
+        "-IC:/Users/heath/Downloads/CPD_TimeShifter-main/build-CPD_TimeShifter-main-Desktop_Qt_5_15_2_MinGW_64_bit-Debug",
+        "-IC:/Users/heath/Downloads/CPD_TimeShifter-main/CPD_TimeShifter-main",
+        "-IC:/Users/heath/Downloads/CPD_TimeShifter-main/build-CPD_TimeShifter-main-Desktop_Qt_5_15_2_MinGW_64_bit-Debug/TimeShifter_autogen/include",
+        "-isystemC:/Qt/5.15.2/mingw81_64/include",
+        "-isystemC:/Qt/5.15.2/mingw81_64/include/QtWidgets",
+        "-isystemC:/Qt/5.15.2/mingw81_64/include/QtGui",
+        "-isystemC:/Qt/5.15.2/mingw81_64/include/QtANGLE",
+        "-isystemC:/Qt/5.15.2/mingw81_64/include/QtCore",
+        "-isystemC:/Qt/5.15.2/mingw81_64/mkspecs/win32-g++",
+        "-DQT_CORE_LIB",
+        "-DQT_GUI_LIB",
+        "-DQT_WIDGETS_LIB",
+        "-x",
+        "c++",
+        "C:\\Users\\heath\\Downloads\\CPD_TimeShifter-main\\CPD_TimeShifter-main\\outputWindow.cpp"
+    ],
+    "directory": "C:/Users/heath/Downloads/CPD_TimeShifter-main/build-CPD_TimeShifter-main-Desktop_Qt_5_15_2_MinGW_64_bit-Debug",
+    "file": "C:/Users/heath/Downloads/CPD_TimeShifter-main/CPD_TimeShifter-main/outputWindow.cpp"
+}
+]
